@@ -53,6 +53,7 @@ THREE.PLYLoader.prototype = {
   },
 
   isASCII: function(buf){
+    // currently only supports ASCII encoded files.
     return true;
 
   },
@@ -80,7 +81,7 @@ THREE.PLYLoader.prototype = {
 
     var patternBody = /end_header([\s\S]*)$/;
     var body = "";
-    if( ( result - patternBody.exec( data ) ) != null ) {
+    if( ( result = patternBody.exec( data ) ) != null ) {
       body = result [1];
     }
 
@@ -97,6 +98,7 @@ THREE.PLYLoader.prototype = {
 		}
 
     if (vertexCount != 0 && faceCount != 0 ) {
+
       var patternVertex = /([-+]?[0-9]+\.?[0-9]*([eE][-+]?[0-9]+)?)+[\s]+([-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?)+[\s]+([-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?)+/g;
 			for ( var i = 0; i < vertexCount; i++) {
 				if ( ( result = patternVertex.exec( body ) ) != null ) {
@@ -121,7 +123,7 @@ THREE.PLYLoader.prototype = {
     } else {
       console.error( 'Header error: vertexCount(' + vertexCount + '), faceCount(' + faceCount + ').');
     }
-    geometry.computeCentroids();
+    // geometry.computeCentroids();
     geometry.computeBoundingSphere();
 
     return geometry;
@@ -134,3 +136,5 @@ THREE.PLYLoader.prototype = {
   }
 
 };
+
+THREE.EventDispatcher.prototype.apply( THREE.PLYLoader.prototype );
