@@ -12,6 +12,7 @@
     <script src="OrbitControls.js"></script>
     <script src="OBJLoader.js"></script>
     <script src="MTLLoader.js"></script>
+    <script src="PLYLoader.js"></script>
 
     <style>
         body {
@@ -107,27 +108,38 @@
             backLight.position.set(100, 0, -100).normalize();
 
             /* Model */
+            var loader = new THREE.PLYLoader();
 
-            var mtlLoader = new THREE.MTLLoader();
-            mtlLoader.setBaseUrl('assets/');
-            mtlLoader.setPath('assets/');
-            mtlLoader.load('female-croupier-2013-03-26.mtl', function (materials) {
+            loader.addEventListener( 'load', function (event) {
 
-                materials.preload();
+                var geometry = event.content;
+                scene.add( new Three.Mesh( geometry ) );
 
-                materials.materials.default.map.magFilter = THREE.NearestFilter;
-                materials.materials.default.map.minFilter = THREE.LinearFilter;
+            } );
+            
+            loader.load('./assets/Icosahedron.ply');
 
-                var objLoader = new THREE.OBJLoader();
-                objLoader.setMaterials(materials);
-                objLoader.setPath('assets/');
-                objLoader.load('female-croupier-2013-03-26.obj', function (object) {
-
-                    scene.add(object);
-
-                });
-
-            });
+            // var PLYLoader = new THREE.PLYLoader();
+            // PLYLoader.setBaseUrl('assets/');
+            // PLYLoader.setPath('assets/');
+            //
+            // PLYLoader.load('Icosahedron', function (materials) {
+            //
+            //     materials.preload();
+            //
+            //     materials.materials.default.map.magFilter = THREE.NearestFilter;
+            //     materials.materials.default.map.minFilter = THREE.LinearFilter;
+            //
+            //     var objLoader = new THREE.OBJLoader();
+            //     objLoader.setMaterials(materials);
+            //     objLoader.setPath('assets/');
+            //     objLoader.load('female-croupier-2013-03-26.obj', function (object) {
+            //
+            //         scene.add(object);
+            //
+            //     });
+            //
+            // });
 
             /* Renderer */
 
